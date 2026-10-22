@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AZ-900 Study Buddy (Unofficial)</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1d1d1b;--muted:#6b6a64;--card:#fff;--line:#e2e0d8;--accent:#0b6e4f;--accent-fg:#fff;--good:#0b6e4f;--bad:#b3261e;--goodbg:#e3f3ec;--badbg:#fbe9e7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--fg:#efeee9;--muted:#9c9a92;--card:#1f1f1d;--line:#34332f;--accent:#4cc79a;--accent-fg:#0c1f17;--good:#4cc79a;--bad:#ff8a80;--goodbg:#14322a;--badbg:#3a1f1c}}
+:root[data-theme="dark"]{--bg:#141413;--fg:#efeee9;--muted:#9c9a92;--card:#1f1f1d;--line:#34332f;--accent:#4cc79a;--accent-fg:#0c1f17;--good:#4cc79a;--bad:#ff8a80;--goodbg:#14322a;--badbg:#3a1f1c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.4rem;margin:0}
+.sub{color:var(--muted);font-size:.85rem;margin:2px 0 16px}
+nav{display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+nav button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:10px 4px;font:inherit;color:var(--muted);cursor:pointer}
+nav button.on{color:var(--fg);border-bottom-color:var(--accent);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+label{font-size:.85rem;color:var(--muted);display:block;margin:0 0 4px}
+select,input,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.row>*{flex:1;min-width:150px}
+button.pri{background:var(--accent);color:var(--accent-fg);border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+button.pri:disabled{opacity:.5;cursor:wait}
+button.ghost{background:none;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:8px 12px;font:inherit;cursor:pointer}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:4px 12px;font-size:.85rem;cursor:pointer}
+.msg{white-space:pre-wrap;margin:0 0 12px}
+.msg.me{color:var(--muted);font-size:.9rem}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;font:inherit;cursor:pointer}
+.opt.good{border-color:var(--good);background:var(--goodbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.fb{margin-top:12px;padding:12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);white-space:pre-wrap}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:var(--accent)}
+.big{font-size:2.4rem;font-weight:700;line-height:1}
+.muted{color:var(--muted);font-size:.85rem}
+.err{color:var(--bad)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<h1>AZ-900 Study Buddy</h1>
+<p class="sub">Unofficial study aid. Not affiliated with or endorsed by Microsoft. All content is AI-generated; verify on Microsoft Learn.</p>
+<nav id="nav"><button data-t="buddy" class="on">Study Buddy</button><button data-t="quiz">Quiz</button><button data-t="progress">Readiness</button></nav>
+
+<section id="buddy">
+  <div class="card">
+    <div class="row">
+      <div><label for="lang">Explain in</label>
+        <select id="lang"><option>English</option><option>Swahili</option><option>Simple English with Sheng</option><option>French</option><option>Hausa</option><option>Yoruba</option><option>Zulu</option></select></div>
+      <div><label for="ctx">African example from</label>
+        <select id="ctx"><option>Any African context</option><option>Kenya (M-Pesa, matatus)</option><option>Nigeria (fintech, Lagos markets)</option><option>Ghana (mobile money, cocoa)</option><option>South Africa (load-shedding, retail)</option><option>Rwanda / Ethiopia (agri-tech)</option></select></div>
+    </div>
+    <label for="q">Ask about any AZ-900 concept</label>
+    <textarea id="q" rows="2" placeholder="e.g. What is the difference between scalability and elasticity?"></textarea>
+    <div class="chips" id="chips"></div>
+    <button class="pri" id="ask">Explain it</button>
+  </div>
+  <div id="chat"></div>
+</section>
+
+<section id="quiz" hidden>
+  <div class="card">
+    <div class="row">
+      <div><label for="dom">Topic</label><select id="dom"></select></div>
+      <div><label for="lvl">Difficulty</label><select id="lvl"><option>Beginner</option><option selected>Exam level</option><option>Tricky</option></select></div>
+    </div>
+    <div class="row"><button class="pri" id="gen">New question</button><button class="ghost" id="weak">Target my weakest area</button></div>
+    <p class="muted" id="qstat"></p>
+  </div>
+  <div id="qbox"></div>
+</section>
+
+<section id="progress" hidden>
+  <div class="card">
+    <div class="muted">Estimated readiness</div>
+    <div class="big" id="ready">–</div>
+    <p class="muted" id="readynote"></p>
+  </div>
+  <div class="card" id="bars"></div>
+  <div class="card"><div class="muted" style="margin-bottom:6px">Weakest subtopics</div><div id="weaklist"></div></div>
+  <button class="ghost" id="reset">Reset my progress</button>
+</section>
+</main>
+
+<script>
+const D={
+  cloud:{name:"Describe cloud concepts",w:.275,subs:["Cloud computing benefits (high availability, scalability, elasticity, agility)","Shared responsibility model","CapEx vs OpEx and consumption-based pricing","IaaS, PaaS and SaaS","Public, private and hybrid cloud","Reliability, predictability, security and governance in the cloud"]},
+  arch:{name:"Describe Azure architecture and services",w:.375,subs:["Regions, region pairs and availability zones","Resource groups and subscriptions","Virtual machines, scale sets and availability sets","Containers, App Service and Azure Functions","Virtual networks, VPN Gateway and ExpressRoute","Storage accounts, redundancy and tiers","Microsoft Entra ID, SSO, MFA and Conditional Access","Zero Trust and defence in depth","Azure IoT, AI and serverless service categories"]},
+  mgmt:{name:"Describe Azure management and governance",w:.35,subs:["Cost factors and the pricing calculator / TCO calculator","Microsoft Cost Management and tags","Azure Policy and resource locks","Microsoft Purview and compliance","Azure portal, Cloud Shell, CLI and PowerShell","Azure Resource Manager, ARM templates and Bicep","Azure Arc and infrastructure as code","Azure Advisor, Service Health and Azure Monitor"]}
+};
+const $=s=>document.querySelector(s);
+const KEY="az900-unofficial-stats-v1";
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+let stats=load(), sample=null, recent=[];
+
+// ---- tabs
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x===b));
+  ["buddy","quiz","progress"].forEach(id=>$("#"+id).hidden=id!==b.dataset.t);
+  if(b.dataset.t==="progress")renderProgress();
+});
+
+(async()=>{try{sample=await claude.use("sample")}catch(e){sample=null}
+  if(!sample){const n=document.createElement("p");n.className="muted err";n.textContent="AI features are unavailable in this view. Open the page from claude.ai and allow access to enable the Study Buddy and quiz generator.";document.querySelector("main").insertBefore(n,$("#nav"))}
+})();
+
+// ---- Study Buddy
+const BUDDY=`You are "Study Buddy", a friendly tutor helping a beginner prepare for Microsoft Azure Fundamentals (AZ-900), based on the public AZ-900 skills outline.
+Rules:
+- Explain the concept in plain words first (2-4 sentences), then give ONE real-life analogy or example set in the learner's chosen African context, then a one-line "Exam tip" on how this is usually tested or confused with a similar concept.
+- Be accurate about Azure. If you are unsure of a detail, say so and point to Microsoft Learn rather than guessing.
+- Keep the answer under 180 words. No headings, no markdown symbols.
+- Write in the requested language. Keep Azure service names in English.
+- Never reproduce real exam questions.`;
+const chips=["Scalability vs elasticity","What is an availability zone?","Shared responsibility model","IaaS vs PaaS vs SaaS","What does Azure Policy do?","CapEx vs OpEx"];
+chips.forEach(t=>{const c=document.createElement("button");c.className="chip";c.textContent=t;c.onclick=()=>{$("#q").value=t;ask()};$("#chips").appendChild(c)});
+$("#ask").onclick=ask;
+async function ask(){
+  const q=$("#q").value.trim(); if(!q)return;
+  if(!sample){return}
+  const btn=$("#ask");btn.disabled=true;
+  const me=document.createElement("p");me.className="msg me";me.textContent="You: "+q;
+  const out=document.createElement("p");out.className="msg";out.textContent="Thinking…";
+  $("#chat").prepend(out);$("#chat").prepend(me);
+  const prompt=`${BUDDY}\n\nLanguage: ${$("#lang").value}\nContext for the example: ${$("#ctx").value}\n\nLearner question: ${q}`;
+  try{await sample(prompt,{cache:false,onText:({text})=>{out.textContent=text}})}
+  catch(e){out.textContent="Sorry, that didn’t work ("+(e&&e.code||"error")+"). Please try again.";out.classList.add("err")}
+  btn.disabled=false;
+}
+
+// ---- Quiz
+Object.entries(D).forEach(([k,v])=>{const o=document.createElement("option");o.value=k;o.textContent=v.name;$("#dom").appendChild(o)});
+const QUIZ=`You write ORIGINAL practice questions for Microsoft Azure Fundamentals (AZ-900), based only on the public AZ-900 skills outline. Never copy or closely imitate real exam questions.
+Return ONLY a JSON object, no markdown, with these keys:
+"question": string (a short scenario or direct question),
+"options": array of exactly 4 strings (plausible distractors, similar length, no "all of the above"),
+"answer": integer 0-3 index of the single correct option,
+"why": string explaining in 1-3 sentences why the correct option is right,
+"whyNot": array of 4 strings, one per option in order; for the correct option write "Correct."; for the others explain the specific misconception that makes it wrong,
+"tip": string, one-line memory aid.
+Be technically accurate. If a fact is uncertain, choose a different question.`;
+function pickSub(dom,weak){
+  const subs=D[dom].subs;
+  if(weak){const t=subs.filter(s=>stats[s]).sort((a,b)=>acc(a)-acc(b));if(t.length&&acc(t[0])<.8)return t[0]}
+  return subs[Math.floor(Math.random()*subs.length)];
+}
+const acc=s=>stats[s]?stats[s].c/stats[s].a:0;
+$("#gen").onclick=()=>newQ(false);
+$("#weak").onclick=()=>{
+  let best=null,bs=2;
+  Object.entries(D).forEach(([k,v])=>v.subs.forEach(s=>{if(stats[s]&&acc(s)<bs){bs=acc(s);best=[k,s]}}));
+  if(best){$("#dom").value=best[0];newQ(true,best[1])}else newQ(false);
+};
+async function newQ(weak,forceSub){
+  if(!sample)return;
+  const dom=$("#dom").value, sub=forceSub||pickSub(dom,false);
+  const box=$("#qbox");box.innerHTML="";
+  const card=document.createElement("div");card.className="card";card.textContent="Writing a question…";box.appendChild(card);
+  $("#gen").disabled=true;
+  const prompt=`${QUIZ}\n\nExam domain: ${D[dom].name}\nSubtopic: ${sub}\nDifficulty: ${$("#lvl").value}\nAvoid repeating these recent questions: ${JSON.stringify(recent.slice(-6))}`;
+  try{
+    const r=await sample.json(prompt,{cache:false});
+    if(!r||!Array.isArray(r.options)||r.options.length!==4||!Number.isInteger(r.answer))throw {code:"bad_format"};
+    recent.push(String(r.question).slice(0,80));
+    show(card,r,dom,sub);
+  }catch(e){card.textContent="Couldn’t generate a question ("+(e&&e.code||"error")+"). Tap “New question” to retry.";card.classList.add("err")}
+  $("#gen").disabled=false;
+}
+function show(card,r,dom,sub){
+  card.textContent="";
+  const m=document.createElement("div");m.className="muted";m.textContent=D[dom].name+" · "+sub;card.appendChild(m);
+  const q=document.createElement("p");q.style.fontWeight="600";q.textContent=r.question;card.appendChild(q);
+  let done=false;
+  r.options.forEach((t,i)=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=String.fromCharCode(65+i)+". "+t;
+    b.onclick=()=>{
+      if(done)return;done=true;
+      const ok=i===r.answer;
+      const s=stats[sub]||(stats[sub]={d:dom,a:0,c:0});s.a++;if(ok)s.c++;save(stats);
+      [...card.querySelectorAll(".opt")].forEach((x,j)=>{if(j===r.answer)x.classList.add("good");else if(j===i)x.classList.add("bad")});
+      const fb=document.createElement("div");fb.className="fb";
+      const why=Array.isArray(r.whyNot)&&r.whyNot[i]&&!ok?"\n\nYour choice: "+r.whyNot[i]:"";
+      fb.textContent=(ok?"Correct! ":"Not quite. The answer is "+String.fromCharCode(65+r.answer)+". ")+r.why+why+(r.tip?"\n\nMemory aid: "+r.tip:"");
+      card.appendChild(fb);
+      const n=document.createElement("button");n.className="pri";n.style.marginTop="12px";n.textContent="Next question";n.onclick=()=>newQ(false);card.appendChild(n);
+      stat();
+    };
+    card.appendChild(b);
+  });
+}
+function stat(){let a=0,c=0;Object.values(stats).forEach(s=>{a+=s.a;c+=s.c});$("#qstat").textContent=a?`Answered ${a} · ${Math.round(c/a*100)}% correct overall`:"Pick a topic and start practising."}
+stat();
+
+// ---- Readiness
+function dstat(k){let a=0,c=0;Object.values(stats).forEach(s=>{if(s.d===k){a+=s.a;c+=s.c}});return{a,c}}
+function renderProgress(){
+  const bars=$("#bars");bars.innerHTML="";
+  let tot=0,wsum=0,enough=true;
+  Object.entries(D).forEach(([k,v])=>{
+    const {a,c}=dstat(k),p=a?c/a:0;
+    if(a<5)enough=false;
+    tot+=p*v.w;wsum+=v.w;
+    const w=document.createElement("div");w.style.marginBottom="12px";
+    const t=document.createElement("div");t.textContent=v.name;
+    const m=document.createElement("div");m.className="muted";m.textContent=a?`${c}/${a} correct · ${Math.round(p*100)}% · exam weight about ${Math.round(v.w*100)}%`:"No questions yet";
+    const bar=document.createElement("div");bar.className="bar";const i=document.createElement("i");i.style.width=Math.round(p*100)+"%";bar.appendChild(i);
+    w.append(t,bar,m);bars.appendChild(w);
+  });
+  const pct=Math.round(tot/wsum*100);
+  const any=Object.keys(stats).length>0;
+  $("#ready").textContent=any?pct+"%":"–";
+  $("#readynote").textContent=!any?"Answer some quiz questions to see your estimate.":!enough?"Answer at least 5 questions in every topic for a reliable estimate.":pct>=80?"Looking strong. Keep practising the weak spots below, then consider booking the exam.":pct>=60?"Getting there. Focus on your weakest subtopics.":"Keep studying. Use the Study Buddy on the topics you miss.";
+  const wl=$("#weaklist");wl.innerHTML="";
+  const arr=Object.entries(stats).filter(([,s])=>s.a>0).sort((x,y)=>x[1].c/x[1].a-y[1].c/y[1].a).slice(0,5);
+  if(!arr.length){wl.textContent="Nothing yet.";wl.className="muted"}
+  arr.forEach(([n,s])=>{const p=document.createElement("div");p.style.margin="6px 0";p.textContent=`${Math.round(s.c/s.a*100)}% (${s.c}/${s.a}) · ${n}`;wl.appendChild(p)});
+}
+$("#reset").onclick=()=>{if(confirm("Clear all saved progress?")){stats={};recent=[];save(stats);renderProgress();stat()}};
+</script>
+</body>
+</html>
