@@ -12,7 +12,7 @@ Built for the **#1MillionDevs AZ-900 Vibe Coding Hackathon** (20 to 23 October 2
 
 ## The problem
 
-I kept failing the same elasticity vs. scalability questions because every definition sounded identical  "the ability to handle changing demand." What finally fixed it was thinking about a boda boda rider in Nairobi: scalability is buying a second bike because your regular customers doubled over the year; elasticity is calling in three riders for one chaotic Friday when a nearby office empties out at 5pm. The other thing that nearly broke me was practice tests telling me "Incorrect" with zero explanation so I started forcing myself to write one sentence on why I picked the wrong answer, and those notes did more for me than the tests themselves. By the end I wasn't sure I was ready, but I'd hit 85%+ across all four domains twice in a row, and that was the bar I trusted.
+I kept failing the same elasticity vs. scalability questions because every definition sounded identical: “the ability to handle changing demand.” What fixed it was a boda boda rider in Nairobi. Scalability is buying a second bike because your regular customers doubled over the year. Elasticity is calling in three riders for one chaotic Friday when a nearby office empties out at 5pm. The other thing that nearly broke me was practice tests that said “Incorrect” with no explanation. I started writing one sentence on why I chose each wrong answer, and those notes did more for me than the tests themselves. I built the tool I wished I’d had: local analogies on demand, and explanations that name the misconception behind every wrong answer
 
 
 ## What it does
